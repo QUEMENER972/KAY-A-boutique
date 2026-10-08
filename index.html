@@ -104,6 +104,113 @@
   <a class="btn whatsapp wide" href="https://wa.me/596696305025?text=Bonjour%20KAY%C3%89A%2C%20je%20souhaite%20passer%20commande." target="_blank" rel="noopener">Commander / question WhatsApp</a>
   <p class="note">🔒 Paiement sécurisé par carte bancaire via Stripe.</p>
 </aside>
-<script src="script.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  let quantity = 1;
+  let cartQuantity = 0;
+  const price = 49.90;
+
+  const qty = document.getElementById("qty");
+  const plus = document.getElementById("plus");
+  const minus = document.getElementById("minus");
+  const addCart = document.getElementById("addCart");
+
+  const cartOpen = document.getElementById("cartOpen");
+  const cartClose = document.getElementById("cartClose");
+  const cart = document.getElementById("cart");
+  const overlay = document.getElementById("overlay");
+
+  const cartItems = document.getElementById("cartItems");
+  const cartTotal = document.getElementById("cartTotal");
+  const cartCount = document.getElementById("cartCount");
+
+  function updateQuantity() {
+    qty.textContent = quantity;
+  }
+
+  function updateCart() {
+
+    cartCount.textContent = cartQuantity;
+
+    if (cartQuantity === 0) {
+      cartItems.innerHTML = "<p>Ton panier est vide.</p>";
+      cartTotal.textContent = "0,00 €";
+      return;
+    }
+
+    const total = price * cartQuantity;
+
+    cartItems.innerHTML = `
+      <div class="cart-item">
+        <strong>Box Boucles Tropicales</strong>
+        <p>49,90 € × ${cartQuantity}</p>
+
+        <div>
+          <button type="button" id="cartMinus">−</button>
+          <span>${cartQuantity}</span>
+          <button type="button" id="cartPlus">+</button>
+        </div>
+      </div>
+    `;
+
+    cartTotal.textContent =
+      total.toFixed(2).replace(".", ",") + " €";
+
+    document.getElementById("cartMinus").onclick = function () {
+      if (cartQuantity > 0) {
+        cartQuantity--;
+        updateCart();
+      }
+    };
+
+    document.getElementById("cartPlus").onclick = function () {
+      cartQuantity++;
+      updateCart();
+    };
+  }
+
+  plus.onclick = function () {
+    quantity++;
+    updateQuantity();
+  };
+
+  minus.onclick = function () {
+    if (quantity > 1) {
+      quantity--;
+      updateQuantity();
+    }
+  };
+
+  addCart.onclick = function () {
+    cartQuantity += quantity;
+    updateCart();
+
+    cart.classList.add("open");
+    overlay.classList.add("show");
+  };
+
+  cartOpen.onclick = function () {
+    cart.classList.add("open");
+    overlay.classList.add("show");
+    updateCart();
+  };
+
+  cartClose.onclick = function () {
+    cart.classList.remove("open");
+    overlay.classList.remove("show");
+  };
+
+  overlay.onclick = function () {
+    cart.classList.remove("open");
+    overlay.classList.remove("show");
+  };
+
+  updateQuantity();
+  updateCart();
+
+});
+</script>
+
 </body>
 </html>
