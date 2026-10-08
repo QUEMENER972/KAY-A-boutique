@@ -1,134 +1,64 @@
-const cfg = KAYEA_CONFIG;
+const PRODUCT = {
+  name: "Box Boucles Tropicales",
+  price: 49.90
+};
 
-let qty = 1;
-let cartQty = 0;
+let quantity = 1;
 
-const euro = n =>
-  n.toLocaleString("fr-FR", {
-    style: "currency",
-    currency: "EUR"
-  });
+const qtyElement = document.getElementById("qty");
+const minusButton = document.getElementById("minus");
+const plusButton = document.getElementById("plus");
+const addCartButton = document.getElementById("addCart");
 
-const $ = s => document.querySelector(s);
+const cartOpen = document.getElementById("cartOpen");
+const cartClose = document.getElementById("cartClose");
+const cart = document.getElementById("cart");
+const overlay = document.getElementById("overlay");
 
+const cartItems = document.getElementById("cartItems");
+const cartTotal = document.getElementById("cartTotal");
+const cartCount = document.getElementById("cartCount");
 
-// ANNÉE
-$("#year").textContent = new Date().getFullYear();
+let cartQuantity = 0;
 
-
-// WHATSAPP
-function whatsappUrl(message) {
-  return `https://wa.me/${cfg.whatsappNumber}?text=${encodeURIComponent(message)}`;
+function formatPrice(price) {
+  return price.toFixed(2).replace(".", ",") + " €";
 }
 
-$("#heroWhatsapp").href = whatsappUrl(
-  "Bonjour KAYÉA, je souhaite des informations sur la Box Boucles Tropicales."
-);
+function updateQuantity() {
+  if (qtyElement) {
+    qtyElement.textContent = quantity;
+  }
+}
 
-$("#bannerWhatsapp").href = whatsappUrl(
-  "Bonjour MAYA, j'aimerais des conseils pour mes cheveux."
-);
+function updateCart() {
+  if (!cartItems) return;
 
-$("#footerWhatsapp").href =
-  `https://wa.me/${cfg.whatsappNumber}`;
-
-$("#cartWhatsapp").href = whatsappUrl(
-  "Bonjour KAYÉA, je souhaite passer commande."
-);
-
-
-// INSTAGRAM
-$("#instagramLink").href = cfg.instagramUrl;
-
-
-// QUANTITÉ
-$("#plus").onclick = () => {
-  qty++;
-  $("#qty").textContent = qty;
-};
-
-$("#minus").onclick = () => {
-  qty = Math.max(1, qty - 1);
-  $("#qty").textContent = qty;
-};
-
-
-// PANIER
-function renderCart() {
-
-  $("#cartCount").textContent = cartQty;
-
-  if (!cartQty) {
-
-    $("#cartItems").innerHTML =
-      '<p class="empty">Ton panier est vide.</p>';
-
-    $("#cartTotal").textContent = euro(0);
-
-    $("#payBtn").href = "#";
-
+  if (cartQuantity === 0) {
+    cartItems.innerHTML = `
+      <p class="empty-cart">Ton panier est vide.</p>
+    `;
+    cartTotal.textContent = "0,00 €";
+    cartCount.textContent = "0";
     return;
   }
 
-  const total = cfg.productPrice * cartQty;
+  const total = PRODUCT.price * cartQuantity;
 
-  $("#cartItems").innerHTML = `
+  cartItems.innerHTML = `
     <div class="cart-item">
       <div>
-        <b>${cfg.productName}</b>
-        <br>
-        <small>Quantité : ${cartQty}</small>
+        <strong>${PRODUCT.name}</strong>
+        <p>${formatPrice(PRODUCT.price)} × ${cartQuantity}</p>
       </div>
 
-      <strong>${euro(total)}</strong>
+      <div class="cart-quantity">
+        <button id="cartMinus">−</button>
+        <span>${cartQuantity}</span>
+        <button id="cartPlus">+</button>
+      </div>
     </div>
   `;
 
-  $("#cartTotal").textContent = euro(total);
-
-  const url = cfg.stripePaymentLink;
-
-  $("#payBtn").href =
-    url && url.startsWith("http")
-      ? url
-      : "#";
-}
-
-
-// OUVERTURE DU PANIER
-function openCart() {
-  renderCart();
-
-  $("#cart").classList.add("open");
-  $("#overlay").classList.add("show");
-}
-
-
-// FERMETURE DU PANIER
-function closeCart() {
-  $("#cart").classList.remove("open");
-  $("#overlay").classList.remove("show");
-}
-
-
-// AJOUT AU PANIER
-$("#addCart").onclick = () => {
-
-  cartQty += qty;
-
-  qty = 1;
-
-  $("#qty").textContent = 1;
-
-  openCart();
-};
-
-
-// BOUTONS PANIER
-$("#cartOpen").onclick = openCart;
-$("#cartClose").onclick = closeCart;
-$("#overlay").onclick = closeCart;
-
-
-// INITIALISATION
-renderCart();
+  cartTotal.textContent = formatPrice(total);
+  cartCount.text
