@@ -1,153 +1,36 @@
-const cfg = KAYEA_CONFIG;
+# KAYÉA 🌴
 
-let qty = 1;
-let cartQty = 0;
+**Beauté tropicale & soins pour cheveux texturés en Martinique.**
 
-const euro = n =>
-n.toLocaleString("fr-FR", {
-style: "currency",
-currency: "EUR"
-});
+KAYÉA est une boutique en ligne dédiée aux cheveux bouclés, frisés et crépus, avec une sélection de produits et accessoires pensés pour une routine beauté adaptée à l'univers tropical.
 
-const $ = s => document.querySelector(s);
+## 🌺 Box Boucles Tropicales
 
-// =========================
-// ANNÉE
-// =========================
+**Prix : 49,90 €**
 
-$("#year").textContent = new Date().getFullYear();
+La Box Boucles Tropicales comprend :
 
-// =========================
-// WHATSAPP
-// =========================
+- Gelée Honey KALAZAZA
+- Crème K-Monoï KALAZAZA
+- Bonnet satin
+- Chouchou satin
+- Boîte cadeau & papier de soie
+- Carte KAYÉA
 
-const whatsappMessage =
-"Bonjour KAYÉA, je souhaite des informations sur la Box Boucles Tropicales.";
+## 💳 Paiement
 
-const whatsappAdviceMessage =
-"Bonjour MAYA, j'aimerais des conseils pour mes cheveux.";
+Le paiement de la Box Boucles Tropicales est sécurisé et effectué via Stripe.
 
-const whatsappOrderMessage =
-"Bonjour KAYÉA, je souhaite passer commande.";
+👉 [Acheter la Box Boucles Tropicales – 49,90 €](https://buy.stripe.com/bJe7sK7q1fDE8Wb2hqcMM00)
 
-function whatsappUrl(message) {
-return "https://wa.me/${cfg.whatsappNumber}?text=${encodeURIComponent(message)}";
-}
+## 💬 Contact
 
-$("#heroWhatsapp").href = whatsappUrl(whatsappMessage);
-$("#bannerWhatsapp").href = whatsappUrl(whatsappAdviceMessage);
-$("#footerWhatsapp").href = "https://wa.me/${cfg.whatsappNumber}";
-$("#cartWhatsapp").href = whatsappUrl(whatsappOrderMessage);
+Pour toute question concernant les produits ou les commandes, contactez KAYÉA via WhatsApp ou Instagram.
 
-// =========================
-// INSTAGRAM
-// =========================
+## 🌴 À propos
 
-$("#instagramLink").href = cfg.instagramUrl;
+KAYÉA souhaite proposer une expérience beauté simple, pratique et chaleureuse autour des cheveux texturés, avec une identité inspirée de la Martinique et des Antilles.
 
-// =========================
-// QUANTITÉ
-// =========================
+---
 
-$("#plus").onclick = () => {
-qty++;
-$("#qty").textContent = qty;
-};
-
-$("#minus").onclick = () => {
-qty = Math.max(1, qty - 1);
-$("#qty").textContent = qty;
-};
-
-// =========================
-// PANIER
-// =========================
-
-function renderCart() {
-
-$("#cartCount").textContent = cartQty;
-
-if (!cartQty) {
-
-$("#cartItems").innerHTML =
-  '<p class="empty">Ton panier est vide.</p>';
-
-$("#cartTotal").textContent = euro(0);
-
-$("#payBtn").href = "#";
-
-return;
-
-}
-
-const total = cfg.productPrice * cartQty;
-
-$("#cartItems").innerHTML = `
-<div class="cart-item">
-<div>
-<b>${cfg.productName}</b>
-<br>
-<small>Quantité : ${cartQty}</small>
-</div>
-
-  <strong>${euro(total)}</strong>
-</div>
-
-`;
-
-$("#cartTotal").textContent = euro(total);
-
-const url = cfg.stripePaymentLink;
-
-$("#payBtn").href =
-url && url.startsWith("http")
-? url
-: "#";
-}
-
-// =========================
-// OUVERTURE / FERMETURE PANIER
-// =========================
-
-function openCart() {
-renderCart();
-
-$("#cart").classList.add("open");
-$("#overlay").classList.add("show");
-}
-
-function closeCart() {
-$("#cart").classList.remove("open");
-$("#overlay").classList.remove("show");
-}
-
-// =========================
-// AJOUT AU PANIER
-// =========================
-
-$("#addCart").onclick = () => {
-
-cartQty += qty;
-
-qty = 1;
-
-$("#qty").textContent = 1;
-
-openCart();
-};
-
-// =========================
-// BOUTONS PANIER
-// =========================
-
-$("#cartOpen").onclick = openCart;
-
-$("#cartClose").onclick = closeCart;
-
-$("#overlay").onclick = closeCart;
-
-// =========================
-// INITIALISATION
-// =========================
-
-renderCart();
+© KAYÉA — Tous droits réservés.
